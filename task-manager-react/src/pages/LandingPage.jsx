@@ -1,34 +1,23 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import imageLogo from '../assets/iconTask.webp'
+import HeaderLanding from '../components/HeaderLanding'
+import HeroCTA from '../components/HeroCTA'
+import Features from '../components/Features'
+import Footer from '../components/Footer'
 const LandingPage = () => {
   return (
     <>
-      <header className='p-5 flex justify-between items-center bg-rose-100 shadow-sm'>
-        <div className='w-14'>
-          <img src={imageLogo} alt='imagen logo' className=' rounded-full' />
-        </div>
-        <nav className='flex gap-8'>
-          <Link
-            to='/account'
-            className=' font-semibold text-xl text-violet-900 hover:text-orange-600 transition-colors'
-          >
-            Crear cuenta
-          </Link>
-          <Link
-            to='/account/login'
-            className=' font-semibold text-xl text-violet-900 hover:text-orange-600 transition-colors'
-          >
-            Iniciar sesión
-          </Link>
-        </nav>
-      </header>
+      <HeaderLanding />
       <main>
-        <div className='container mx-auto p-5'>
-          <h1 className='font-extrabold text-transparent text-center text-5xl bg-clip-text bg-gradient-to-r from-violet-600 to-rose-600'>
-            AllTask
-          </h1>
-        </div>
+        <HeroCTA />
+        <section className='relative'>
+          <div className='bg-lines bg-cover bg-no-repeat opacity-60 p-4'>
+            <h2 className='font-black text-2xl text-orange-900 bg-orange-300 p-2 rounded-md inline-block'>
+              Que todo se concrete!!
+            </h2>
+            <Features />
+          </div>
+        </section>
+        <Footer />
       </main>
     </>
   )

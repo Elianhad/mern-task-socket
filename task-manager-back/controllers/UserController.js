@@ -1,5 +1,6 @@
 import User from '../models/User.js'
 import { idGenerator, jwtGenerator } from '../helpers/index.js'
+import { emailRegistro } from '../helpers/emails.js'
 const createdNewUser = async (req, res) => {
   // evitar registros duplicados
   const { email } = req.body
@@ -11,10 +12,15 @@ const createdNewUser = async (req, res) => {
   try {
     const newUser = new User(req.body)
     newUser.token = idGenerator()
-    const saveUser = await newUser.save()
-    res.json(saveUser)
+    await newUser.save()
+    emailRegistro({
+      email: newUser.email,
+      name: newUser.name,
+      token: newUser.token
+    })
+    res.json({ msg: 'Usuario creado correctamente. Revisa tu email para confirmar la cuenta' })
   } catch (error) {
-    console.error(error)
+    res.status(500).json(error)
   }
 }
 const login = async (req, res) => {
@@ -44,7 +50,7 @@ const confirmAccount = async (req, res) => {
   const { token } = req.params
   const userToConfirm = await User.findOne({ token })
   if (!userToConfirm) {
-    const error = new Error('Hubo un error en la validación')
+    const error = new Error('Token no válido')
     res.status(403).json({ msg: error.message })
   }
   try {
@@ -52,8 +58,8 @@ const confirmAccount = async (req, res) => {
     userToConfirm.token = ''
     await userToConfirm.save()
     res.json({ msg: 'Usuario confirmado' })
-  } catch (error) {
-    console.log(error)
+  } catch (err) {
+    console.log(err)
   }
 }
 const resetPassword = async (req, res) => {
