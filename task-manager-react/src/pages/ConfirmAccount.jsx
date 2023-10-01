@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Toaster, toast } from 'sonner'
+
 const ConfirmAccount = () => {
-  const [] = useState()
   const { id } = useParams()
+  const navigate = useNavigate()
   const confirmAccount = async () => {
     try {
       const url = `${import.meta.env.VITE_BACK_URL}/user/validaccount/${id}`
       const { data } = await axios(url)
-      console.log(data)
+      toast.success(data.msg)
+      navigate({to: '/account/login'})
     } catch (error) {
       if (error.response) {
         const msg = error?.response.data.msg

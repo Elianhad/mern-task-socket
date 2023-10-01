@@ -10,10 +10,11 @@ dotenv.config()
 connectDB()
 // config CORS
 const whiteList = [process.env.FRONT_URL]
-console.log(whiteList)
 const optionCors = {
-  origin: whiteList
+  origin: whiteList,
+  credential: true
 }
+
 const app = express()
 app.use(cors(optionCors))
 app.use(express.json())

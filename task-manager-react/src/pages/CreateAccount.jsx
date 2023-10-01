@@ -1,12 +1,15 @@
 import { useState } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Toaster, toast } from 'sonner'
 import axios from 'axios'
+
 const CreateAccount = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
+  const navigate = useNavigate()
+  // submit para crear cuenta
   const handleSubmit = async (e) => {
     e.preventDefault()
     // validación del formulario
@@ -26,7 +29,7 @@ const CreateAccount = () => {
           name,
           email,
           password
-        }
+        },
       )
       toast.success(data.msg)
       setName('')
@@ -34,10 +37,12 @@ const CreateAccount = () => {
       setPassword('')
       setPassword2('')
       
-      Navigate({ replace: '/' })
+      navigate({ replace: '/' })
     } catch (error) {
-      const msg = error?.response.data.msg
-      if(msg) return toast.error(msg)
+      console.log(error)
+      if (error) {
+        
+      }
     }
   }
   return (

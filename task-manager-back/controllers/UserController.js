@@ -48,18 +48,17 @@ const login = async (req, res) => {
 }
 const confirmAccount = async (req, res) => {
   const { token } = req.params
-  const userToConfirm = await User.findOne({ token })
-  if (!userToConfirm) {
-    const error = new Error('Token no válido')
-    res.status(403).json({ msg: error.message })
-  }
   try {
+    const userToConfirm = await User.findOne({ token })
+    if (!userToConfirm.token) {
+      throw new Error('Token no válido')
+    }
     userToConfirm.confirmed = true
     userToConfirm.token = ''
     await userToConfirm.save()
-    res.json({ msg: 'Usuario confirmado' })
+    return res.json({ msg: 'Usuario confirmado' })
   } catch (err) {
-    console.log(err)
+    res.status(403).json({ msg: err.message })
   }
 }
 const resetPassword = async (req, res) => {
