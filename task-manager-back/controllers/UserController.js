@@ -1,6 +1,6 @@
 import User from '../models/User.js'
 import { idGenerator, jwtGenerator } from '../helpers/index.js'
-import { emailRegistro } from '../helpers/emails.js'
+import { emailRegistro, emailForgotPass } from '../helpers/emails.js'
 const createdNewUser = async (req, res) => {
   // evitar registros duplicados
   const { email } = req.body
@@ -48,16 +48,17 @@ const login = async (req, res) => {
 }
 const confirmAccount = async (req, res) => {
   const { token } = req.params
+  const userToConfirm = await User.findOne({ token })
+  if (!userToConfirm) {
+    return res.status(403).json({ msg: 'Token no válido' })
+  }
   try {
-    const userToConfirm = await User.findOne({ token })
-    if (!userToConfirm.token) {
-      throw new Error('Token no válido')
-    }
     userToConfirm.confirmed = true
     userToConfirm.token = ''
     await userToConfirm.save()
     return res.json({ msg: 'Usuario confirmado' })
   } catch (err) {
+    console.log(err)
     res.status(403).json({ msg: err.message })
   }
 }
@@ -71,6 +72,12 @@ const resetPassword = async (req, res) => {
   try {
     user.token = idGenerator()
     await user.save()
+    // enviar email de confirmación
+    emailForgotPass({
+      email: user.email,
+      name: user.name,
+      token: user.token
+    })
     res.json({ msg: 'Revisa tu correo para cambiar contraseña' })
   } catch (error) {
     console.log(error)

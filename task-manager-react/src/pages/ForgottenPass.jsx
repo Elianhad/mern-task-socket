@@ -1,6 +1,24 @@
-import React from 'react'
+import {useState} from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { Toaster, toast } from 'sonner'
+
 const ForgottenPass = () => {
+  const [email, setEmail] = useState('')
+
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    // email validado por html
+    
+    try {
+      const { data } = await axios.post(`${import.meta.env.VITE_BACK_URL}/user/resetpassword`, { email })
+      toast.success(data.msg)
+    } catch (error) {
+      console.error(error?.response)
+      toast.error(error?.response?.data.msg)
+    }
+  }
   return (
     <>
       <div className='block'>
@@ -9,7 +27,9 @@ const ForgottenPass = () => {
         </h1>
       </div>
 
-      <form className='p-8 flex flex-col justify-center my-3 bg-rose-50 shadow-sm rounded'>
+      <form className='p-8 flex flex-col justify-center my-3 bg-rose-50 shadow-sm rounded'
+            onSubmit={handleSubmit}
+      >
         <div className='mt-6'>
           <label
             className='font-bold text-rose-700 block uppercase'
@@ -21,8 +41,11 @@ const ForgottenPass = () => {
             id='email'
             name='email'
             type='email'
+            value={email}
+            required
             className='w-full rounded-sm p-2 mt-2 outline-none focus:border-2 focus:border-orange-400 bg-rose-100'
             placeholder='correo@correo.com'
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <button
@@ -40,6 +63,7 @@ const ForgottenPass = () => {
           Volver
         </Link>
       </nav>
+      <Toaster />
     </>
   )
 }
