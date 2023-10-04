@@ -9,16 +9,13 @@ const LandingPage = () => {
       <HeaderLanding />
       <main>
         <HeroCTA />
-        <section className='relative'>
-          <div className='bg-lines bg-cover bg-no-repeat opacity-60 p-4'>
-            <h2 className='font-black text-2xl text-orange-900 bg-orange-300 p-2 rounded-md inline-block'>
-              Que todo se concrete!!
-            </h2>
+        <section className='relative bg-lines bg-contain bg-repeat-x bg-'>
+          <div className='p-8  max-w-[60rem] mx-auto'>
             <Features />
           </div>
         </section>
-        <Footer />
       </main>
+      <Footer />
     </>
   )
 }

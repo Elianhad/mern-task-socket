@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Toaster, toast } from 'sonner'
-import axios from 'axios'
+import clienteAxios from '../config/clienteAxios'
 
 const CreateAccount = () => {
   const [name, setName] = useState('')
@@ -23,8 +23,8 @@ const CreateAccount = () => {
       return toast.error('La contraseña debe tener al menos 6 caracteres')
     // pasar a la api
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACK_URL}/user/newaccount`,
+      const { data } = await clienteAxios.post(
+        '/user/newaccount',
         {
           name,
           email,

@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 import { Toaster, toast } from 'sonner'
+import clienteAxios from '../config/clienteAxios'
 
 const ForgottenPass = () => {
   const [email, setEmail] = useState('')
@@ -12,7 +12,7 @@ const ForgottenPass = () => {
     // email validado por html
     
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_BACK_URL}/user/resetpassword`, { email })
+      const { data } = await clienteAxios.post('/user/resetpassword', { email })
       toast.success(data.msg)
     } catch (error) {
       console.error(error?.response)

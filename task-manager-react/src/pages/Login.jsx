@@ -1,6 +1,28 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import clienteAxios from '../config/clienteAxios'
+import useAuthContext from '../hooks/useAuthContext'
+import { Toaster, toast } from 'sonner'
 const Login = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const { setAuth, auth, loading } = useAuthContext()
+  const navigate = useNavigate()
+  const handleSubmitLogin = async (e) => {
+    e.preventDefault()
+    if (password.length < 6) {
+      return toast.error('La contraseña debe tener al menos 6 caracteres')
+    }
+    try {
+      const { data } = await clienteAxios.post('/user/login', { email, password })
+      toast.success('Inicio de sesión aprobado')
+      localStorage.setItem('token', data.token)
+      setAuth(data)
+    } catch (error) {
+      console.error(error)
+      toast.error(error?.response.data.msg)
+    }
+  }
   return (
     <>
       <div className='block'>
@@ -12,7 +34,9 @@ const Login = () => {
         </span>
       </div>
 
-      <form className='p-8 flex flex-col justify-center my-3 bg-rose-50 shadow-sm rounded'>
+      <form className='p-8 flex flex-col justify-center my-3 bg-rose-50 shadow-sm rounded'
+          onSubmit={handleSubmitLogin}      
+      >
         <div className='mt-6'>
           <label
             className='font-bold text-rose-700 block uppercase'
@@ -24,8 +48,11 @@ const Login = () => {
             id='email'
             name='email'
             type='email'
+            required
+            value={email}
             className='w-full rounded-sm p-2 mt-2 outline-none focus:border-2 focus:border-orange-400 bg-rose-100'
             placeholder='correo@correo.com'
+            onChange={ (e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -40,7 +67,9 @@ const Login = () => {
             type='password'
             id='password'
             name='password'
+            value={password}
             className='w-full rounded-sm p-2 mt-2 outline-none focus:border-2 focus:border-orange-400 bg-rose-100'
+            onChange={ (e) => setPassword(e.target.value) }
           />
         </div>
         <button
@@ -64,6 +93,7 @@ const Login = () => {
           Olvidé mi contraseña
         </Link>
       </nav>
+      <Toaster richColors />
     </>
   )
 }

@@ -28,11 +28,11 @@ const login = async (req, res) => {
   const user = await User.findOne({ email })
   if (!user) {
     const error = new Error('El usuario no existe')
-    res.status(404).json({ msg: error.message })
+    return res.status(404).json({ msg: error.message })
   }
   if (!user.confirmed) {
-    const error = new Error('La cuenta no fue confirmada')
-    res.status(403).json({ msg: error.message })
+    const error = new Error('La cuenta no fue confirmada, revisa tu email')
+    return res.status(403).json({ msg: error.message })
   }
   if (await user.checkPassword(password)) {
     res.json({
@@ -104,6 +104,7 @@ const setNewPassword = async (req, res) => {
       await userToReset.save()
     } catch (error) {
       console.log(error)
+      res.status(500).json({ msg: 'Hubo un error' })
     }
     res.json({ msg: 'Su contraseña ha sido cambiada' })
   } else {

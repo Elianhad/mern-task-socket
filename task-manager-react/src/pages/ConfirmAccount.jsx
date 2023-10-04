@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import axios from 'axios'
+import clienteAxios from '../config/clienteAxios'
 import { Toaster, toast } from 'sonner'
 
 const ConfirmAccount = () => {
@@ -8,8 +8,7 @@ const ConfirmAccount = () => {
   const { id } = useParams()
   const confirmAccount = async () => {
     try {
-      const url = `${import.meta.env.VITE_BACK_URL}/user/validaccount/${id}`
-      const { data } = await axios(url)
+      const { data } = await clienteAxios(`/user/validaccount/${id}`)
       toast.success(data.msg)
       setConfirmed(true)
     } catch (error) {

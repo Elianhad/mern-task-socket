@@ -2,13 +2,13 @@ import React from 'react'
 
 const Features = () => {
   return (
-    <div className='lg:grid lg:grid-flow-row-dense lg:grid-cols-2 lg:gap-8 lg:items-center'>
-      <div className='ml-auto lg:col-start-2 lg:max-w-2xl'>
-       
+    <div className='lg:grid mx-auto lg:grid-flow-row-dense lg:grid-cols-2 lg:gap-8 lg:items-center'>
         <h4 className='mt-2 text-2xl font-extrabold leading-8 text-violet-900  sm:text-3xl sm:leading-9'>
           La interacción entre miembros de un equipo es la clave para un
           resultado exitoso.
         </h4>
+      <div className='ml-auto lg:col-start-2 lg:max-w-2xl'>
+       
         <p className='mt-4 text-xl font-bold bg-orange-100 p-2 rounded-md leading-6 text-gray-500'>
           Crea un simple y poderoso espacio para tu equipo. Sigue, comparte.
           Nunca nada fue tan simple y eficiente.
