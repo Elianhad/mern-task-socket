@@ -13,6 +13,7 @@ import ConfirmAccount from './pages/ConfirmAccount'
 import App from './App'
 import ProtectedRoutes from './layout/ProtectedRoutes'
 import NewProject from './pages/NewProject'
+import Project from './pages/Project'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: 'new-project',
         element: <NewProject />
+      },
+      {
+        path: ':id',
+        element: <Project />
       }
     ],
     

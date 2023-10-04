@@ -3,6 +3,7 @@ import { ProjectProvider } from '../context/ProjectProvider'
 import useAuthContext from '../hooks/useAuthContext'
 import HeaderDashboard from '../components/HeaderDashboard'
 import SideBar from '../components/SideBar'
+import { Toaster } from 'sonner'
 
 const ProtectedRoutes = () => {
   const { auth, loading } = useAuthContext()
@@ -14,10 +15,11 @@ const ProtectedRoutes = () => {
       { auth._id ? (
         <ProjectProvider>
           <HeaderDashboard />
-          <div className='flex gap-2 min-h-screen'>
+          <div className='flex min-h-screen'>
             <SideBar />
-            <main className='w-full h-full p-2'>
+            <main className='w-full p-2 h-full'>
               <Outlet />
+              <Toaster richColors />
             </main>
           </div>
         </ProjectProvider>
