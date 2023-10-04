@@ -1,5 +1,8 @@
 import { Outlet, Navigate } from 'react-router-dom'
+import { ProjectProvider } from '../context/ProjectProvider'
 import useAuthContext from '../hooks/useAuthContext'
+import HeaderDashboard from '../components/HeaderDashboard'
+import SideBar from '../components/SideBar'
 
 const ProtectedRoutes = () => {
   const { auth, loading } = useAuthContext()
@@ -9,9 +12,15 @@ const ProtectedRoutes = () => {
   return (
     <>
       { auth._id ? (
-        <>
-          <Outlet />
-        </>
+        <ProjectProvider>
+          <HeaderDashboard />
+          <div className='flex gap-2 min-h-screen'>
+            <SideBar />
+            <main className='w-full h-full p-2'>
+              <Outlet />
+            </main>
+          </div>
+        </ProjectProvider>
       ) : <Navigate to='/' />}  
     </>
   )

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import clienteAxios from '../config/clienteAxios'
 import useAuthContext from '../hooks/useAuthContext'
@@ -23,6 +23,9 @@ const Login = () => {
       toast.error(error?.response.data.msg)
     }
   }
+  useEffect(() => {
+    if(!loading && auth._id) return navigate('/dashboard')
+  },[auth])
   return (
     <>
       <div className='block'>

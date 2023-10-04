@@ -12,6 +12,7 @@ import ChangePass from './pages/ChangePass'
 import ConfirmAccount from './pages/ConfirmAccount'
 import App from './App'
 import ProtectedRoutes from './layout/ProtectedRoutes'
+import NewProject from './pages/NewProject'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'login',
-        element: <Login />
+        element: <Login />,
       },
       {
         path: 'forgotten-password',
@@ -50,13 +51,18 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <App />
+      },
+      {
+        path: 'new-project',
+        element: <NewProject />
       }
-    ]
+    ],
+    
   }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
-    <RouterProvider router={router} />
+    <RouterProvider router={router} / >
   </AuthProvider>
 )
