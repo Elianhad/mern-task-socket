@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const TaskScheme = mongoose.Schema({
   name: {
@@ -23,13 +23,12 @@ const TaskScheme = mongoose.Schema({
   priority: {
     type: String,
     required: true,
-    enum: ['Low', 'Middle', 'High']
+    enum: ['Baja', 'Media', 'Alta']
   },
   project: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project'
   }
-
 }, {
   timestamp: true
 })

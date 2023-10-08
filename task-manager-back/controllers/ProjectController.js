@@ -20,7 +20,7 @@ const getAllProjects = async (req, res) => {
 const getOneProject = async (req, res) => {
   const { id } = req.params
   try {
-    const project = await Project.findById(id)
+    const project = await Project.findById(id).populate('tasks')
     if (!project) {
       const error = new Error('El proyecto no existe')
       return res.status(404).json({ msg: error.message })
@@ -29,11 +29,8 @@ const getOneProject = async (req, res) => {
       const error = new Error('Accion no valida')
       return res.status(401).json({ msg: error.message })
     }
-    const task = await Task.find().where('project').equals(project._id)
-    console.log(task)
     res.json({
-      project,
-      task
+      project
     })
   } catch (error) {
     console.log(error)

@@ -5,7 +5,7 @@ function App() {
   return (
     <div>
       <h1 className='text-2xl font-semibold text-violet-800 uppercase text-center'>Proyectos</h1>
-      <main className='p-2 mt-4 flex flex-col gap-2'>
+      <main className='p-2 mt-4 flex flex-col gap-2 max-w-2xl mx-auto'>
         {
           !projects?.length ?
             <p className='text-lg text-violet-600 font-semibold'>Esto se ve vacío. Inicia un proyecto 😎</p> :

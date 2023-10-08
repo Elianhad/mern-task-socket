@@ -14,7 +14,6 @@ const ProjectPreview = ({ project }) => {
       </div>
       <div className='flex sm:gap-3 justify-evenly items-center'>
         <Link to={`${_id}`} state={project}  className={`${styleButton} text-violet-800`}>Ver</Link>
-        <button className={`${styleButton} text-violet-800`}>Editar</button>
         <button className={`${styleButton} flex gap-1 text-red-500`}
           onClick={() => deleteProject(_id)}
           ><IconTrash />Eliminar</button>

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import useProjectContext from '../hooks/useProjectContext'
 import { toast } from 'sonner'
 
@@ -8,20 +8,35 @@ const FormProject = () => {
   const [description, setDescription] = useState('')
   const [client, setClient] = useState('')
   const [date, setDate] = useState(new Date())
-  const { saveProject } = useProjectContext()
+  const { saveProject, actualProject } = useProjectContext()
+  const params = useParams()
   const navigate = useNavigate()
+
   const handleSubmitProject = async (e) => {
     e.preventDefault()
     if ([name, description, client, date].includes('')) {
       return toast.error('Todos los campos son obligatorios')
     }
-    await saveProject({ name, description, client, deliveryDate: date })
+    await saveProject({ name, description, client, deliveryDate: date, id: params.id })
     setName('')
     setDescription('')
     setClient('')
     setDate('')
+    if (actualProject._id) {
+      navigate(`/dashboard/${actualProject._id}`)
+    }
     navigate('/dashboard')
   }
+  useEffect(() => {
+    if (params.id) {
+      setName(actualProject.name)
+      setClient(actualProject.client)
+      setDate(actualProject.deliveryDate.split('T')[0])
+      setDescription(actualProject.description)
+    }
+  }, [params])
+
+  const buttonText = params.id ? 'Editar Proyectos' : 'Crear Proyecto'
   return (
     <form
       onSubmit={handleSubmitProject}
@@ -56,7 +71,7 @@ const FormProject = () => {
       </div>
       <button type='submit'
         className='mt-10 self-center font-bold uppercase w-full text-center text-rose-50 sm:w-2/3 md:1/3 lg:w-1/4 bg-violet-600 p-2 rounded-md hover:bg-violet-800'
-        >Crear proyecto</button>
+      >{buttonText}</button>
     </form>
   )
 }

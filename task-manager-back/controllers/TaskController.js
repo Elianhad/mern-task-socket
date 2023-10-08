@@ -18,22 +18,23 @@ const getOneTasks = async (req, res) => {
 }
 const createTask = async (req, res) => {
   const { project } = req.body
+  const thereProject = await Project.findById(project)
+  if (thereProject.creator._id.toString() !== req.user._id.toString()) {
+    const error = new Error('Accion no valida')
+    return res.status(401).json({ msg: error.message })
+  }
+  if (!thereProject) {
+    const err = new Error('El proyecto no existe')
+    return res.status(404).json({ msg: err.message })
+  }
   try {
-    try {
-      const thereProject = await Project.findById(project)
-
-      if (thereProject.creator._id.toString() !== req.user._id.toString()) {
-        const error = new Error('Accion no valida')
-        return res.status(401).json({ msg: error.message })
-      }
-    } catch (error) {
-      const err = new Error('El proyecto no existe')
-      return res.status(404).json({ msg: err.message })
-    }
     const saveTask = await Task.create(req.body)
+    thereProject.tasks.push(saveTask._id)
+    await thereProject.save()
     res.json(saveTask)
   } catch (err) {
-    const error = new Error('Hubo un error')
+    console.error(err)
+    const error = new Error('Hubo un error en la creación')
     res.json({ msg: error.message })
   }
 }

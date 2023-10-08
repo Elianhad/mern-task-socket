@@ -7,12 +7,12 @@ import { Toaster } from 'sonner'
 
 const ProtectedRoutes = () => {
   const { auth, loading } = useAuthContext()
-  
-  if(loading) return( <div className='w-5 h-5 border-2 absolute top-0 bottom-0 left-0 right-0 animate-spin'></div>)
+
+  if (loading) return (<div className='w-5 h-5 border-2 absolute top-0 bottom-0 left-0 right-0 animate-spin'></div>)
 
   return (
     <>
-      { auth._id ? (
+      {auth._id ? (
         <ProjectProvider>
           <HeaderDashboard />
           <div className='flex min-h-screen'>
@@ -23,7 +23,7 @@ const ProtectedRoutes = () => {
             </main>
           </div>
         </ProjectProvider>
-      ) : <Navigate to='/' />}  
+      ) : <Navigate to='/' />}
     </>
   )
 }

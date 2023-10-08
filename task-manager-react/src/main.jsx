@@ -14,6 +14,7 @@ import App from './App'
 import ProtectedRoutes from './layout/ProtectedRoutes'
 import NewProject from './pages/NewProject'
 import Project from './pages/Project'
+import UpdateProject from './pages/UpdateProject'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: ':id',
         element: <Project />
+      },
+      {
+        path: 'editar/:id',
+        element: <UpdateProject/>
       }
     ],
     

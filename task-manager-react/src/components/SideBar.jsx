@@ -7,7 +7,7 @@ const SideBar = () => {
   const navigate = useNavigate()
   
   return (
-    <aside className='p-4 h-screen shadow-md flex flex-col gap-4'>
+    <aside className='p-4 min-h-screen shadow-md flex flex-col gap-4'>
       <button className='text-violet-800 border-2 border-violet-800 rounded-full p-2 gap-1 flex items-center justify-center hover:border-orange-600 hover:text-orange-600 transition-all'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
