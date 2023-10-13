@@ -62,13 +62,15 @@ const modifyTask = async (req, res) => {
 const deleteTask = async (req, res) => {
   const { id } = req.params
   try {
-    const isTask = await Task.findById(id).populate('project')
-    const isTaskOwner = isTask.project.creator.toString() === req.user._id.toString()
+    const task = await Task.findById(id).populate('project')
+    const isTaskOwner = task.project.creator.toString() === req.user._id.toString()
     if (!isTaskOwner) {
       const error = new Error('Accion no valida')
       return res.status(403).json({ msg: error.message })
     }
-    await isTask.deleteOne()
+    const project = await Project.findById(task.project)
+    project.tasks.pull(task._id)
+    await Promise.allSettled([await project.save(), await task.deleteOne()])
     res.json({ msg: 'Tarea eliminada' })
   } catch (error) {
     const err = new Error('No se encuentra la tarea')
@@ -76,9 +78,25 @@ const deleteTask = async (req, res) => {
   }
 }
 const changeState = async (req, res) => {
-
+  const id = req.params.id
+  try {
+    const task = await Task.findById(id).populate('project')
+    const isTaskOwner = task.project.creator.toString() === req.user._id.toString()
+    const isCollaborator = task.project.collaborators.some(col => col._id.toString() === req.user._id.toString())
+    if (!isTaskOwner && !isCollaborator) {
+      const error = new Error('Accion no valida')
+      return res.status(403).json({ msg: error.message })
+    }
+    task.state = !task.state
+    task.completedBy = req.user._id
+    await task.save()
+    const savedTask = await Task.findById(id).populate('project').populate('completedBy')
+    res.json(savedTask)
+  } catch (error) {
+    const err = new Error('No se encuentra la tarea')
+    res.status(404).json({ msg: err.message })
+  }
 }
-
 export {
   getOneTasks,
   createTask,

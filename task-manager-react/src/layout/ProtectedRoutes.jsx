@@ -17,13 +17,15 @@ const ProtectedRoutes = () => {
           <HeaderDashboard />
           <div className='flex min-h-screen'>
             <SideBar />
-            <main className='w-full p-2 h-full'>
+            <main className='p-1 h-full'>
               <Outlet />
               <Toaster richColors />
             </main>
           </div>
         </ProjectProvider>
-      ) : <Navigate to='/' />}
+      ) : (
+        <Navigate to='/' />
+      )}
     </>
   )
 }

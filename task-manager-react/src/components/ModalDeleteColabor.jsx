@@ -3,15 +3,16 @@ import useProjectContext from '../hooks/useProjectContext'
 import { Transition, Dialog } from '@headlessui/react'
 import { IconTrash, IconX } from '@tabler/icons-react'
 
-const ModalDelete = () => {
-  const { handleModalDelete, modalDelete, deleteTask } = useProjectContext()
+const ModalDeleteColabor = () => {
+  const { handleModalDeleteCol, modalDeleteColaborator, deleteColaborator } =
+    useProjectContext()
 
   return (
-    <Transition.Root show={modalDelete} as={Fragment}>
+    <Transition.Root show={modalDeleteColaborator} as={Fragment}>
       <Dialog
         as='div'
         className='fixed z-10 inset-0 overflow-y-auto'
-        onClose={handleModalDelete}
+        onClose={handleModalDeleteCol}
       >
         <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
           <Transition.Child
@@ -47,7 +48,7 @@ const ModalDelete = () => {
                 <button
                   type='button'
                   className='bg-rose-50 rounded-md text-violet-400 hover:text-violet-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-200'
-                  onClick={handleModalDelete}
+                  onClick={handleModalDeleteCol}
                 >
                   <span className='sr-only'>Cerrar</span>
                   <IconX />
@@ -74,19 +75,14 @@ const ModalDelete = () => {
                     as='h3'
                     className='text-lg leading-6 font-bold text-violet-900'
                   >
-                    ¿Desea eliminar la tarea?
+                    ¿Desea eliminar el colaborador?
                   </Dialog.Title>
                   <div className='mt-4'>
-                    <div>
-                      <p className='font-thin text-violet-500'>
-                        Si lo elimina no lo podrá recuperar{' '}
-                      </p>
-                    </div>
-                    <div className='mt-6 flex gap-4'>
+                    <div className='flex justify-around gap-4 mx-auto'>
                       <button
                         type='button'
                         className='p-2 flex gap-1 shadow text-red-500 hover:scale-105 transition-all'
-                        onClick={deleteTask}
+                        onClick={deleteColaborator}
                       >
                         <IconTrash />
                         <p>Eliminar</p>
@@ -94,7 +90,7 @@ const ModalDelete = () => {
                       <button
                         type='button'
                         className='p-2 flex gap-1 shadow text-violet-800  hover:scale-105 transition-all'
-                        onClick={handleModalDelete}
+                        onClick={handleModalDeleteCol}
                       >
                         Cancelar
                       </button>
@@ -110,4 +106,4 @@ const ModalDelete = () => {
   )
 }
 
-export default ModalDelete
+export default ModalDeleteColabor
