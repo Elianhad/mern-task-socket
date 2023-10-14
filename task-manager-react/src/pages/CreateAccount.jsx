@@ -39,9 +39,9 @@ const CreateAccount = () => {
       
       navigate({ replace: '/' })
     } catch (error) {
-      console.log(error)
       if (error) {
-        
+        toast.error('Hubo un error, vuelva a intentarlo')
+        navigate({replace: '/'})
       }
     }
   }

@@ -8,7 +8,6 @@ const createProject = async (req, res) => {
     const saveProject = await project.save()
     res.json(saveProject)
   } catch (er) {
-    console.log(er)
     const error = new Error('Hubo un error')
     res.json({ msg: error.message })
   }
@@ -38,7 +37,6 @@ const getOneProject = async (req, res) => {
       project
     })
   } catch (error) {
-    console.log(error)
     res.json({ msg: 'Hubo un error' })
   }
 }
@@ -62,7 +60,6 @@ const editProject = async (req, res) => {
     const saveProject = await project.save()
     res.json(saveProject)
   } catch (error) {
-    console.log(error)
     res.json({ msg: 'Hubo un error' })
   }
 }
@@ -81,7 +78,6 @@ const deleteProject = async (req, res) => {
     await project.deleteOne()
     res.json({ msg: 'Proyecto eliminado' })
   } catch (error) {
-    console.log(error)
     res.json({ msg: 'Hubo un error' })
   }
 }
@@ -120,14 +116,12 @@ const addColaborator = async (req, res) => {
     await projectToAdd.save()
     res.json({ msg: 'Colaborador agregado correctamente' })
   } catch (error) {
-    console.error(error)
     return res.json({ msg: 'Hubo un error al agregar el colaborador' })
   }
 }
 const deleteColaborator = async (req, res) => {
   const project = await Project.findById(req.params.id)
   const { email } = req.body
-  console.log(project)
   if (project.creator.toString() !== req.user._id.toString()) {
     const error = new Error('Acción no válida')
     return res.status(403).json({ msg: error.message })
@@ -142,7 +136,6 @@ const deleteColaborator = async (req, res) => {
     await project.save()
     res.json({ msg: 'Colaborador eliminado correctamente' })
   } catch (error) {
-    console.log(error)
     return res.json({ msg: 'Hubo un error al tratar de eliminar el colaborador' })
   }
 }

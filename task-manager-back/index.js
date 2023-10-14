@@ -24,7 +24,6 @@ app.use('/api/user', userRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/task', taskRoutes)
 const serverNode = app.listen(3000, () => {
-  console.log('Server listening on port 3000')
 })
 
 // socket io
@@ -33,7 +32,6 @@ const io = new Server(serverNode, {
   cors: optionCors
 })
 io.on('connection', (socket) => {
-  console.log('conectado a socket')
   socket.on('connect to proyect', (project) => {
     socket.join(project)
   })
@@ -44,11 +42,9 @@ io.on('connection', (socket) => {
     socket.to(task.project).emit('deleted task', task)
   })
   socket.on('update task', task => {
-    console.log(task)
     socket.to(task.project._id).emit('updated task', task)
   })
   socket.on('change state', task => {
-    console.log(task)
     socket.to(task.project._id).emit('changed state', task)
   })
 })

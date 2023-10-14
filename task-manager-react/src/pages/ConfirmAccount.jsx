@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Navigate } from 'react-router-dom'
 import clienteAxios from '../config/clienteAxios'
 import { Toaster, toast } from 'sonner'
 
@@ -31,7 +31,11 @@ const ConfirmAccount = () => {
           Si tu cuenta ha sido validada tendrás un mensaje de confirmación.
         </span>
       </h1>
-      {confirmed ? <Link className='block' to='/account/login' /> : <Link to='/account/'/> }
+      {confirmed ? (
+        <Navigate to='/account/login' />
+      ) : (
+        <Navigate to='/account/' />
+      )}
       <Toaster />
     </div>
   )

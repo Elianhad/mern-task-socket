@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-
+import useProjectContext from '../hooks/useProjectContext'
 const HeaderDashboard = () => {
   const navigate = useNavigate()
+  const { closeApp } = useProjectContext()
   const handleClickCloseSesion = () => {
     localStorage.removeItem('token')
+    closeApp()
     navigate('/')
   }
   return (

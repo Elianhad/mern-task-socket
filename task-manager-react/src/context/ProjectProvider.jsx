@@ -18,14 +18,13 @@ const ProjectProvider = ({ children }) => {
   const [actualTask, setActualTask] = useState({})
   const [colaborator, setColaborator] = useState({})
   const [searcherModal, setSearcherModal] = useState(false)
-  const { auth } = useAuthContext()
+  const { auth, setAuth } = useAuthContext()
   const navigate = useNavigate()
   // Projects
   const saveProject = async (project) => {
     const token = localStorage.getItem('token')
     if (!token) return toast.error('No se encuentra autenticado')
     if (project.id) {
-      console.log('editando ')
       editProject(project, token)
     } else {
       saveOnePoject(project, token)
@@ -70,10 +69,8 @@ const ProjectProvider = ({ children }) => {
         `/projects/${id}`,
         configHeader(token)
       )
-      console.log(data)
       toast.success(data.msg)
     } catch (error) {
-      console.log(error)
       if (error?.response.data.msg) return toast.error(error?.response.data.msg)
     }
     setProjects(projects.filter((p) => p._id !== id))
@@ -90,9 +87,8 @@ const ProjectProvider = ({ children }) => {
       setActualProject(data.project)
       setLoading(false)
     } catch (error) {
-      console.log(error)
       navigate('/dashboard')
-      if (error.response.data.msg) return toast.error(error.response.data.msg)
+      if (error?.response.data.msg) return toast.error(error.response.data.msg)
     }
   }
   // TASKS
@@ -114,12 +110,10 @@ const ProjectProvider = ({ children }) => {
         task,
         configHeader(token)
       )
-
       toast.success('Tarea creada')
       // SOCKET IO
       socket.emit('Add task', data)
     } catch (error) {
-      console.log(error)
       if (error?.response.data.msg) toast.error(error.response.data.msg)
     }
   }
@@ -138,17 +132,14 @@ const ProjectProvider = ({ children }) => {
       socket.emit('update task', data)
       toast.success('Tarea editada')
     } catch (error) {
-      console.log(error)
       if (error?.response.data.msg) toast.error(error?.response.data.msg)
     }
   }
   const handleUpdateTask = (task) => {
-    console.log(task)
     const updateProject = { ...actualProject }
     updateProject.tasks = updateProject.tasks.map((t) =>
       t._id === task._id ? task : t
     )
-    console.log(updateProject)
     setActualProject(updateProject)
   }
   const handleModalDelete = () => {
@@ -166,7 +157,6 @@ const ProjectProvider = ({ children }) => {
       setActualTask({})
       toast.success(data.msg)
     } catch (error) {
-      console.log(error)
       if (error?.response.data.msg) {
         toast.error(error?.response.data.msg)
       }
@@ -183,6 +173,7 @@ const ProjectProvider = ({ children }) => {
   }
   const searchColaborator = async (email) => {
     const token = localStorage.getItem('token')
+    if (!token) return
     try {
       const { data } = await clienteAxios.post(
         '/projects/colaborator',
@@ -255,7 +246,6 @@ const ProjectProvider = ({ children }) => {
       socket.emit('change state', data)
       toast.success('Estado cambiado')
     } catch (error) {
-      console.log(error?.response)
       if (error?.response?.data.msg) toast.error(error?.response?.data.msg)
     }
   }
@@ -268,8 +258,14 @@ const ProjectProvider = ({ children }) => {
   }
   // buscador
   const handleModalSearcher = () => {
-    console.log('buscar')
     setSearcherModal(!searcherModal)
+  }
+  // cerrar sesión
+  const closeApp = () => {
+    setAuth({})
+    setActualTask({})
+    setProjects([])
+    setActualProject({})
   }
   // fetch projects
   useEffect(() => {
@@ -321,7 +317,8 @@ const ProjectProvider = ({ children }) => {
         deleteColaborator,
         completeTask,
         handleChangeStateOfTask,
-        handleModalSearcher
+        handleModalSearcher,
+        closeApp
       }}
     >
       {children}

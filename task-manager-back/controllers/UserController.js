@@ -58,7 +58,6 @@ const confirmAccount = async (req, res) => {
     await userToConfirm.save()
     return res.json({ msg: 'Usuario confirmado' })
   } catch (err) {
-    console.log(err)
     res.status(403).json({ msg: err.message })
   }
 }
@@ -80,7 +79,7 @@ const resetPassword = async (req, res) => {
     })
     res.json({ msg: 'Revisa tu correo para cambiar contraseña' })
   } catch (error) {
-    console.log(error)
+    res.json({ msg: 'Hubo un error' })
   }
 }
 const resetPasswordWithToken = async (req, res) => {
@@ -103,7 +102,6 @@ const setNewPassword = async (req, res) => {
     try {
       await userToReset.save()
     } catch (error) {
-      console.log(error)
       res.status(500).json({ msg: 'Hubo un error' })
     }
     res.json({ msg: 'Su contraseña ha sido cambiada' })

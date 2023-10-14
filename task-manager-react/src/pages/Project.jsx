@@ -71,23 +71,26 @@ const Project = () => {
 
   return (
     <div>
-      <div className='mt-10 p-1 mx-auto max-w-2xl flex justify-between items-center text-violet-900 border-b-2 pb-2'>
-        <h1 className='text-2xl font-bold'>{actualProject.name}</h1>
-        {admin && (
-          <button
-            type='button'
-            className=' hover:text-orange-500 hover:scale-105 transition-all'
-          >
-            <Link
-              className='flex justify-center items-center gap-2'
-              to={`/dashboard/editar/${id}`}
-              state={actualProject}
+      <div className='mt-10 p-1 mx-auto max-w-2xl  text-violet-900 border-b-2 pb-2'>
+        <div className='flex justify-between items-center'>
+          <h1 className='text-2xl font-bold'>{actualProject.name}</h1>
+          {admin && (
+            <button
+              type='button'
+              className=' hover:text-orange-500 hover:scale-105 transition-all'
             >
-              <IconPencilMinus />
-              <span>Editar</span>
-            </Link>
-          </button>
-        )}
+              <Link
+                className='flex justify-center items-center gap-2'
+                to={`/dashboard/editar/${id}`}
+                state={actualProject}
+              >
+                <IconPencilMinus />
+                <span>Editar</span>
+              </Link>
+            </button>
+          )}
+        </div>
+        <div className='mt-2'>{actualProject.description}</div>
       </div>
       {admin && (
         <div className='flex justify-between gap-1 max-w-2xl mx-auto'>
@@ -130,8 +133,8 @@ const Project = () => {
           <h3 className='text-xl font-bold text-violet-900 mt-2'>
             Colaboradores
           </h3>
-          {actualProject?.collaborators ? (
-            actualProject.collaborators?.map((col) => {
+          {actualProject && actualProject.collaborators.length ? (
+            actualProject?.collaborators?.map((col) => {
               return <Colaborators colaborator={col} key={col._id} />
             })
           ) : (

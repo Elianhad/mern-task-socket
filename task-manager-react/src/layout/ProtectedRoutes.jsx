@@ -17,7 +17,7 @@ const ProtectedRoutes = () => {
           <HeaderDashboard />
           <div className='flex min-h-screen'>
             <SideBar />
-            <main className='p-1 h-full mx-auto'>
+            <main className='p-1 h-full w-full mx-auto'>
               <Outlet />
               <Toaster richColors />
             </main>
