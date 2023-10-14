@@ -1,7 +1,7 @@
 {
   "name": "task-manager-back",
   "version": "1.0.0",
-  "description": "Backend for task manager project on nodejs, react and mongoDB",
+  "description": "Backend for task manager project on nodejs, react, mongoDB and socket.io",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,8 @@
     "nodejs",
     "express",
     "apiREST",
-    "MCV"
+    "MCV",
+    "Socket.io"
   ],
   "author": "Elian Emir Hadad",
   "license": "ISC",
