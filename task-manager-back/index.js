@@ -10,7 +10,7 @@ import { Server } from 'socket.io'
 dotenv.config()
 connectDB()
 // config CORS
-const whiteList = [process.env.FRONT_URL, 'http://localhost:5173']
+const whiteList = [process.env.FRONT_URL]
 const optionCors = {
   origin: whiteList,
   credential: true
