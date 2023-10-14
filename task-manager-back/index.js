@@ -22,7 +22,8 @@ app.use(express.json())
 app.use('/api/user', userRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/task', taskRoutes)
-const serverNode = app.listen(3000, () => {
+const serverNode = app.listen(process.env.PORT, () => {
+  console.log(`Server listening at ${process.env.PORT}`)
 })
 
 // socket io
