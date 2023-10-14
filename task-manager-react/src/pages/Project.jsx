@@ -12,6 +12,7 @@ import ModalColaborator from '../components/ModalColaborator'
 import Colaborators from '../components/Colaborators'
 import ModalDeleteColabor from '../components/ModalDeleteColabor'
 
+let socket
 const Project = () => {
   const params = useParams()
   const {
@@ -19,7 +20,11 @@ const Project = () => {
     actualProject,
     loading,
     handleModalTask,
-    handleModalColaborator
+    handleModalColaborator,
+    handleTaskSaver,
+    handleDeletedTask,
+    handleUpdateTask,
+    handleChangeStateOfTask
   } = useProjectContext()
   const { id } = params
   const admin = useAdmin()
@@ -30,10 +35,33 @@ const Project = () => {
     }
     getProject()
   }, [id])
+  // conectar con socket io
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_BACK_URL)
-    socket.on('open project', id)
+    socket = io(import.meta.env.VITE_BASE_URL_BACKEND)
+    socket.emit('connect to proyect', id)
   }, [])
+  useEffect(() => {
+    socket.on('added task', (task) => {
+      if (task.project === actualProject._id) {
+        handleTaskSaver(task)
+      }
+    })
+    socket.on('deleted task', (task) => {
+      if (task.project === actualProject?._id) {
+        handleDeletedTask(task)
+      }
+    })
+    socket.on('updated task', (task) => {
+      if (task.project._id === actualProject._id) {
+        handleUpdateTask(task)
+      }
+    })
+    socket.on('changed state', (task) => {
+      if (task.project._id === actualProject._id) {
+        handleChangeStateOfTask(task)
+      }
+    })
+  })
   if (loading)
     return (
       <div className='mt-10'>

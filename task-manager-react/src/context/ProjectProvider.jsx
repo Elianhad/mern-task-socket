@@ -1,10 +1,12 @@
 import { createContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import useAuthContext from '../hooks/useAuthContext'
+import { io } from 'socket.io-client'
 import clienteAxios from '../config/clienteAxios'
 import configHeader from '../config/configHeader'
 import { toast } from 'sonner'
 const ProjectContext = createContext()
-
+let socket
 const ProjectProvider = ({ children }) => {
   const [projects, setProjects] = useState([])
   const [actualProject, setActualProject] = useState({})
@@ -16,7 +18,9 @@ const ProjectProvider = ({ children }) => {
   const [actualTask, setActualTask] = useState({})
   const [colaborator, setColaborator] = useState({})
   const [searcherModal, setSearcherModal] = useState(false)
+  const { auth } = useAuthContext()
   const navigate = useNavigate()
+  // Projects
   const saveProject = async (project) => {
     const token = localStorage.getItem('token')
     if (!token) return toast.error('No se encuentra autenticado')
@@ -91,6 +95,7 @@ const ProjectProvider = ({ children }) => {
       if (error.response.data.msg) return toast.error(error.response.data.msg)
     }
   }
+  // TASKS
   const handleModalTask = () => {
     setActualTask({})
     setModalFormTask(!modalFormTask)
@@ -109,14 +114,19 @@ const ProjectProvider = ({ children }) => {
         task,
         configHeader(token)
       )
-      const updateProject = { ...actualProject }
-      updateProject.tasks = [...updateProject.tasks, data]
-      setActualProject(updateProject)
+
       toast.success('Tarea creada')
+      // SOCKET IO
+      socket.emit('Add task', data)
     } catch (error) {
       console.log(error)
       if (error?.response.data.msg) toast.error(error.response.data.msg)
     }
+  }
+  const handleTaskSaver = (task) => {
+    const updateProject = { ...actualProject }
+    updateProject.tasks = [...updateProject.tasks, task]
+    setActualProject(updateProject)
   }
   const updateTask = async (task, token) => {
     try {
@@ -125,16 +135,21 @@ const ProjectProvider = ({ children }) => {
         task,
         configHeader(token)
       )
-      const updateProject = { ...actualProject }
-      updateProject.tasks = updateProject.tasks.map((t) =>
-        t._id === data._id ? data : t
-      )
-      setActualProject(updateProject)
+      socket.emit('update task', data)
       toast.success('Tarea editada')
     } catch (error) {
       console.log(error)
       if (error?.response.data.msg) toast.error(error?.response.data.msg)
     }
+  }
+  const handleUpdateTask = (task) => {
+    console.log(task)
+    const updateProject = { ...actualProject }
+    updateProject.tasks = updateProject.tasks.map((t) =>
+      t._id === task._id ? task : t
+    )
+    console.log(updateProject)
+    setActualProject(updateProject)
   }
   const handleModalDelete = () => {
     setModalDelete(!modalDelete)
@@ -146,11 +161,7 @@ const ProjectProvider = ({ children }) => {
         `/task/${actualTask._id}`,
         configHeader(token)
       )
-      const updateProject = { ...actualProject }
-      updateProject.tasks = updateProject.tasks.filter(
-        (t) => t._id !== actualTask._id
-      )
-      setActualProject(updateProject)
+      socket.emit('delete task', actualTask)
       handleModalDelete()
       setActualTask({})
       toast.success(data.msg)
@@ -161,6 +172,12 @@ const ProjectProvider = ({ children }) => {
       }
     }
   }
+  const handleDeletedTask = (task) => {
+    const updateProject = { ...actualProject }
+    updateProject.tasks = updateProject.tasks.filter((t) => t._id !== task._id)
+    setActualProject(updateProject)
+  }
+  // colaboradores
   const handleModalColaborator = () => {
     setModalColaborator(!modalColaborator)
   }
@@ -225,6 +242,7 @@ const ProjectProvider = ({ children }) => {
     if (colaborator) setColaborator(colaborator)
     setModalDeleteColaborator(!modalDeleteColaborator)
   }
+  // completar tarea
   const completeTask = async (id) => {
     const token = localStorage.getItem('token')
     if (!token) return
@@ -234,21 +252,26 @@ const ProjectProvider = ({ children }) => {
         actualTask,
         configHeader(token)
       )
-      const updateProject = { ...actualProject }
-      updateProject.tasks = updateProject.tasks.map((task) =>
-        task._id === data._id ? data : task
-      )
-      setActualProject(updateProject)
+      socket.emit('change state', data)
       toast.success('Estado cambiado')
     } catch (error) {
       console.log(error?.response)
       if (error?.response?.data.msg) toast.error(error?.response?.data.msg)
     }
   }
+  const handleChangeStateOfTask = (task) => {
+    const updateProject = { ...actualProject }
+    updateProject.tasks = updateProject.tasks.map((taskState) =>
+      taskState._id === task._id ? task : taskState
+    )
+    setActualProject(updateProject)
+  }
+  // buscador
   const handleModalSearcher = () => {
     console.log('buscar')
     setSearcherModal(!searcherModal)
   }
+  // fetch projects
   useEffect(() => {
     const token = localStorage.getItem('token')
     const fetchProjects = async () => {
@@ -261,6 +284,10 @@ const ProjectProvider = ({ children }) => {
       }
     }
     fetchProjects()
+  }, [auth])
+  // effect para conección con socket
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BASE_URL_BACKEND)
   }, [])
 
   return (
@@ -282,14 +309,18 @@ const ProjectProvider = ({ children }) => {
         handleModalDeleteCol,
         saveProject,
         deleteProject,
+        handleDeletedTask,
         getOneProject,
         saveTask,
+        handleTaskSaver,
+        handleUpdateTask,
         setActualTask,
         deleteTask,
         searchColaborator,
         addColaborator,
         deleteColaborator,
         completeTask,
+        handleChangeStateOfTask,
         handleModalSearcher
       }}
     >

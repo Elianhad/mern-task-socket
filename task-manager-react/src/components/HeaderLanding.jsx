@@ -6,16 +6,16 @@ const HeaderLanding = () => {
       <h1 className='font-extrabold text-transparent text-center text-4xl bg-clip-text bg-gradient-to-r from-violet-600 to-rose-600'>
         IITask
       </h1>
-      <nav className='flex gap-2 justify-center items-center'>
+      <nav className='flex gap-3 justify-center items-center'>
         <Link
           to='/account'
-          className='font-semibold text-lg text-violet-900 hover:text-orange-600 transition-colors'
+          className='font-semibold text-sm text-violet-900 hover:text-orange-600 transition-colors'
         >
           Crear cuenta
         </Link>
         <Link
           to='/account/login'
-          className='font-semibold text-lg text-violet-900 hover:text-orange-600 transition-colors'
+          className='font-semibold text-sm text-violet-900 hover:text-orange-600 transition-colors'
         >
           Iniciar sesión
         </Link>

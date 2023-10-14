@@ -30,10 +30,25 @@ const serverNode = app.listen(3000, () => {
 // socket io
 const io = new Server(serverNode, {
   pingTimeout: 60000,
-  cors: {
-    origin: 'http://localhost:5173'
-  }
+  cors: optionCors
 })
 io.on('connection', (socket) => {
   console.log('conectado a socket')
+  socket.on('connect to proyect', (project) => {
+    socket.join(project)
+  })
+  socket.on('Add task', (task) => {
+    socket.to(task.project).emit('added task', task)
+  })
+  socket.on('delete task', (task) => {
+    socket.to(task.project).emit('deleted task', task)
+  })
+  socket.on('update task', task => {
+    console.log(task)
+    socket.to(task.project._id).emit('updated task', task)
+  })
+  socket.on('change state', task => {
+    console.log(task)
+    socket.to(task.project._id).emit('changed state', task)
+  })
 })

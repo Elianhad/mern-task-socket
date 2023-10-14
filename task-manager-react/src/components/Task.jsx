@@ -35,7 +35,7 @@ const Task = ({ task }) => {
   }
   const handleOnClickChangeStatus = () => {
     setStatusTask(!statusTask)
-    completeTask(_id)
+    completeTask(task._id)
   }
   return (
     <div className='bg-rose-200 text-violet-800 relative flex flex-col sm:flex-row gap-6 shadow-md p-4 rounded-md justify-between max-w-full'>
