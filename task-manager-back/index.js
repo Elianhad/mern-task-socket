@@ -19,7 +19,6 @@ const optionCors = {
 const app = express()
 app.use(cors(optionCors))
 app.use(express.json())
-app.use('/', () => ('<h1>Bienvenidos a la app</h1>'))
 app.use('/api/user', userRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/task', taskRoutes)
