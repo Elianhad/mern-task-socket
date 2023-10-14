@@ -278,6 +278,7 @@ const ProjectProvider = ({ children }) => {
         searcherModal,
         handleModalTask,
         handleModalColaborator,
+        handleModalDelete,
         handleModalDeleteCol,
         saveProject,
         deleteProject,

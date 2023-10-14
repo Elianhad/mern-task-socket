@@ -29,13 +29,15 @@ const ProjectPreview = ({ project }) => {
         >
           Ver
         </Link>
-        <button
-          className={`${styleButton} flex gap-1 text-red-500`}
-          onClick={() => deleteProject(_id)}
-        >
-          <IconTrash />
-          Eliminar
-        </button>
+        {creator === auth._id && (
+          <button
+            className={`${styleButton} flex gap-1 text-red-500`}
+            onClick={() => deleteProject(_id)}
+          >
+            <IconTrash />
+            Eliminar
+          </button>
+        )}
       </div>
     </div>
   )

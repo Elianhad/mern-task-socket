@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { io } from 'socket.io-client'
 import useProjectContext from '../hooks/useProjectContext'
 import useAdmin from '../hooks/useAdmin'
 import { IconPencilMinus, IconPlus, IconUsers } from '@tabler/icons-react'
@@ -10,7 +11,6 @@ import ModalDelete from '../components/ModalDelete'
 import ModalColaborator from '../components/ModalColaborator'
 import Colaborators from '../components/Colaborators'
 import ModalDeleteColabor from '../components/ModalDeleteColabor'
-
 
 const Project = () => {
   const params = useParams()
@@ -30,6 +30,10 @@ const Project = () => {
     }
     getProject()
   }, [id])
+  useEffect(() => {
+    const socket = io(import.meta.env.VITE_BACK_URL)
+    socket.on('open project', id)
+  }, [])
   if (loading)
     return (
       <div className='mt-10'>
