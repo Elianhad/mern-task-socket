@@ -67,6 +67,10 @@ const router = createBrowserRouter([
         element: <UpdateProject/>
       }
     ],
+    {
+      path: "*",
+      element: 
+    }
     
   }
 ])

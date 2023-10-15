@@ -34,7 +34,7 @@ const Project = () => {
       await getOneProject(id)
     }
     getProject()
-  }, [id])
+  }, [])
   // conectar con socket io
   useEffect(() => {
     socket = io(import.meta.env.VITE_BASE_URL_BACKEND)

@@ -137,7 +137,7 @@ const CreateAccount = () => {
           className='block font-semibold text-center my-5 text-violet-800 hover:text-violet-700 transition-colors'
           to='/account/login'
         >
-          ¿Ya tienes una cuenta? Inicia sesción
+          ¿Ya tienes una cuenta? Inicia sesión
         </Link>
         <Link
           className='block font-semibold text-center my-5 text-violet-800 hover:text-violet-700 transition-colors'
