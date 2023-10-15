@@ -15,6 +15,7 @@ import ProtectedRoutes from './layout/ProtectedRoutes'
 import NewProject from './pages/NewProject'
 import Project from './pages/Project'
 import UpdateProject from './pages/UpdateProject'
+import Page404 from './pages/Page404'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -30,25 +31,25 @@ const router = createBrowserRouter([
       },
       {
         path: 'login',
-        element: <Login />,
+        element: <Login />
       },
       {
         path: 'forgotten-password',
-        element: <ForgottenPass/>
+        element: <ForgottenPass />
       },
-     {
-       path: 'forgotten-password/:token',
-       element: <ChangePass/>
+      {
+        path: 'forgotten-password/:token',
+        element: <ChangePass />
       },
       {
         path: 'confirm-account/:id',
-        element: <ConfirmAccount/>
-     }
+        element: <ConfirmAccount />
+      }
     ]
   },
   {
     path: '/dashboard',
-    element: < ProtectedRoutes />,
+    element: <ProtectedRoutes />,
     children: [
       {
         index: true,
@@ -64,15 +65,14 @@ const router = createBrowserRouter([
       },
       {
         path: 'editar/:id',
-        element: <UpdateProject/>
+        element: <UpdateProject />
       }
-    ],
-    {
-      path: "*",
-      element: 
-    }
-    
-  }
+    ]
+  },
+  {
+    path: '*',
+    element: <Page404 />
+  }dd
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
