@@ -72,7 +72,7 @@ const router = createBrowserRouter([
   {
     path: '*',
     element: <Page404 />
-  }dd
+  }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
