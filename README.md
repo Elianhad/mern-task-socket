@@ -13,7 +13,7 @@ Este proyecto es un administrador de tareas que permite a los usuarios autentica
 ## Cómo probar el proyecto
 
 Para probar el proyecto, puedes seguir estos pasos:
-1. [Enlace al proyecto][https://iitask.vercel.app/]
+1. (Enlace al proyecto)[https://iitask.vercel.app/]
 2. Inicia sesión
 3. Las credenciales de prueba son: correo@correo.com, 123qwe
 
@@ -31,4 +31,4 @@ Ten en cuenta que actualmente no puedes crear nuevas cuentas debido a la falta d
 
 ## Contribuir
 
-Si deseas contribuir al proyecto, siéntete libre de abrir problemas (issues) o enviar solicitudes de extracción (pull requests) en el repositorio de GitHub.
+Si deseas contribuir al proyecto, siéntete libre de abrir problemas (issues) o enviar solicitudes pull requests en el repositorio de GitHub.
